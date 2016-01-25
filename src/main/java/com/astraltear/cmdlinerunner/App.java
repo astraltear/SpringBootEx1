@@ -11,17 +11,25 @@ import org.springframework.context.annotation.ComponentScan;
 public class App implements CommandLineRunner {
 
 	@Autowired
-	CustomerService customerService;
+	CustomerRepository customerRepository;
+//	CustomerService customerService;
+	
 	
 	@Override
 	public void run(String... strings) throws Exception {
-		customerService.save(new Customer(1,"nobita","nobi"));
+		
+/*		customerService.save(new Customer(1,"nobita","nobi"));
 		customerService.save(new Customer(2,"nobita2","nobi2"));
 		customerService.save(new Customer(3,"nobita3","nobi3"));
 		customerService.save(new Customer(4,"nobita4","nobi4"));
 		
 		
-		customerService.findAll().forEach(System.out::println);
+		customerService.findAll().forEach(System.out::println);*/
+		
+		Customer created = customerRepository.save(new Customer(null,"ARA","KO"));
+		System.out.println(created +"is created!!!");
+		
+		customerRepository.findAll().forEach(System.out::println);
 		
 	}
 	
