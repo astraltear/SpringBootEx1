@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import com.astraltear.cmdlinerunner.Customer;
 
 @EnableAutoConfiguration
-//@ComponentScan 이 어노테이션을 활성화하면 DBConfig.java에서 DataSource를 읽어온다. DataSource를 명시적으로 정의하면 @EnableAutoConfiguration의 자동 등록 기능은 무시.
+@ComponentScan  // 이 어노테이션을 활성화하면 DBConfig.java에서 DataSource를 읽어온다. DataSource를 명시적으로 정의하면 @EnableAutoConfiguration의 자동 등록 기능은 무시.
 public class H2ConTest  implements CommandLineRunner {
 	
 	@Autowired

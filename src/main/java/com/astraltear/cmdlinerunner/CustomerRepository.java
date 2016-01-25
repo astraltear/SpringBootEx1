@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +25,14 @@ public class CustomerRepository {
 	
 	@Autowired
 	NamedParameterJdbcTemplate jdbcTemplate;
+	
+	SimpleJdbcInsert insert;
+	
+	@PostConstruct
+	public void init() {
+		insert = new SimpleJdbcInsert( (JdbcTemplate) jdbcTemplate.getJdbcOperations() ).withTableName("customers").usingGeneratedKeyColumns("id");
+	}
+	
 	
 	private static final RowMapper<Customer> customerRowMapper = (rs, i) -> {
 		Integer id = rs.getInt("id");
@@ -46,6 +58,8 @@ public class CustomerRepository {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(customer);
 		
 		if(customer.getId() == null) {
+			Number key = insert.executeAndReturnKey(param);
+			customer.setId(key.intValue());
 			jdbcTemplate.update("INSERT INTO customers(first_name,last_name) values(:firstName, :lastName)", param);
 			
 		} else {

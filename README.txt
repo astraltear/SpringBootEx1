@@ -2,6 +2,7 @@ spring boot 1.3.1.RELEASE
 lombok (설치 및 dependency 추가 해야 함) 
 H2 database
 loj4jdbc-remix logback.xml
+Thymeleaf
 
 
 
